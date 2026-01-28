@@ -57,3 +57,12 @@ cdk.out/
 *.pth
 *.onnx
 *.npy
+# ===== STAT359 A2 large artifacts (avoid pushing huge files) =====
+student/Assignment_2/processed_data.pkl
+student/Assignment_2/*.model
+student/Assignment_2/word2vec-google-news-300.model
+student/Assignment_2/fasttext-wiki-news-subwords-300.model
+
+# caches
+student/Assignment_2/__pycache__/
+student/Assignment_2/.ipynb_checkpoints/

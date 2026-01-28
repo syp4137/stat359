@@ -8,16 +8,14 @@ from tqdm import tqdm
 
 # Hyperparameters
 EMBEDDING_DIM = 100
-BATCH_SIZE = 128  # change it to fit your memory constraints, e.g., 256, 128 if you run out of memory
-EPOCHS = 25
+BATCH_SIZE = 512  # change it to fit your memory constraints, e.g., 256, 128 if you run out of memory
+EPOCHS = 5
 LEARNING_RATE = 0.01
 NEGATIVE_SAMPLES = 5  # Number of negative samples per positive
 
 # Custom Dataset for Skip-gram
 class SkipGramDataset(Dataset):
     def __init__(self, skipgram_df):
-        # skipgram_df: pandas DataFrame with columns ['center', 'context']
-        # NOTE: DataFrame 그대로 쓰면 느려서 tensor로 변환해 둠
         self.centers = torch.as_tensor(skipgram_df["center"].to_numpy(dtype="int64"))
         self.contexts = torch.as_tensor(skipgram_df["context"].to_numpy(dtype="int64"))
 
@@ -46,25 +44,24 @@ class Word2Vec(nn.Module):
 with open("processed_data.pkl", "rb") as f:
     data = pickle.load(f)
 
-# data keys: sent_list, counter, word2idx, idx2word, skipgram_df
+# data keys
 word2idx = data["word2idx"]
 idx2word = data["idx2word"]
 counter = data["counter"]
 skipgram_df = data["skipgram_df"]
-
 vocab_size = len(word2idx)
 
 # Precompute negative sampling distribution below
 def build_neg_sampling_probs(counter, word2idx, power=0.75):
-    # counter: Counter(word -> count)
-    # word2idx: dict(word -> idx)
     counts = torch.zeros(len(word2idx), dtype=torch.float64)
+
     for w, c in counter.items():
         if w in word2idx:
             counts[word2idx[w]] = c
+    
     probs = counts.pow(power)
     probs = probs / probs.sum()
-    return probs.to(dtype=torch.float32)  # torch.multinomial이 float이면 OK
+    return probs.to(dtype=torch.float32)  # torch.multinomial이 foat이면 OK
 
 neg_probs_cpu = build_neg_sampling_probs(counter, word2idx)  # CPU tensor
 
@@ -86,66 +83,101 @@ loader = DataLoader(
     batch_size=BATCH_SIZE,
     shuffle=True,
     drop_last=True,
-    num_workers=2,     # Colab에서 문제 생기면 0으로
+    num_workers=2,
     pin_memory=(device.type == "cuda")
 )
 
 # Model, Loss, Optimizer
-
+model = Word2Vec(vocab_size=vocab_size, embedding_dim=EMBEDDING_DIM).to(device)
+bce = nn.BCEWithLogitsLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 def make_targets(center, context, vocab_size):
-    pass
+    """
+    center:  LongTensor, shape (B,)
+    context: LongTensor, shape (B,)  # positive context
+    vocab_size: int
+
+    returns
+      all_contexts: LongTensor, shape (B, 1+K)  # [pos | neg1..negK]
+      labels:       FloatTensor, shape (B, 1+K) # [1, 0, ..., 0]
+    """
+    # center는 여기서 직접 쓰진 않지만, 함수 시그니처 맞추기 위해 받음
+    device = center.device
+    B = center.size(0)
+    K = NEGATIVE_SAMPLES
+
+    # 1) positive contexts: (B,1)
+    pos = context.view(B, 1)
+
+    # 2) negative sampling (CPU에서 뽑고 -> device로 이동)
+    # neg_probs_cpu는 vocab_size 길이의 확률분포 텐서라고 가정
+    assert neg_probs_cpu.numel() == vocab_size, "neg_probs_cpu size mismatch"
+
+    neg = torch.multinomial(
+        neg_probs_cpu, num_samples=B * K, replacement=True
+    ).view(B, K)  # CPU tensor
+
+    # 3) negative 안에 positive context가 섞이면 재샘플링해서 제거
+    pos_cpu = pos.cpu()
+    mask = (neg == pos_cpu)
+    while mask.any():
+        n_bad = int(mask.sum().item())
+        neg[mask] = torch.multinomial(neg_probs_cpu, n_bad, replacement=True)
+        mask = (neg == pos_cpu)
+
+    # 4) device로 이동
+    neg = neg.to(device, non_blocking=True)
+    pos = pos.to(device, non_blocking=True)
+
+    # 5) contexts 합치기: (B, 1+K)
+    all_contexts = torch.cat([pos, neg], dim=1)
+
+    # 6) labels 만들기: pos=1, neg=0  (BCEWithLogitsLoss용)
+    labels = torch.zeros(B, 1 + K, device=device, dtype=torch.float32)
+    labels[:, 0] = 1.0
+
+    return all_contexts, labels
 
 # Training loop
-def resample_if_matches(neg, contexts, probs_cpu):
-    # neg: (B, K), contexts: (B,)
-    mask = (neg == contexts.unsqueeze(1))
-    while mask.any():
-        n = int(mask.sum().item())
-        neg[mask] = torch.multinomial(probs_cpu, n, replacement=True).to(neg.device)
-        mask = (neg == contexts.unsqueeze(1))
-    return neg
-
 model.train()
+
 for epoch in range(1, EPOCHS + 1):
-    running = 0.0
+    running_loss = 0.0
 
     for step, (centers, contexts) in enumerate(loader, start=1):
-        centers = centers.to(device, non_blocking=True)   # (B,)
-        contexts = contexts.to(device, non_blocking=True) # (B,)
-        B = centers.size(0)
+        # 1) Move data to device (GPU if available)
+        centers = centers.to(device, non_blocking=True)    # (B,)
+        contexts = contexts.to(device, non_blocking=True)  # (B,)
 
-        # --- negative sampling (B, K) ---
-        neg = torch.multinomial(
-            neg_probs_cpu, num_samples=B * NEGATIVE_SAMPLES, replacement=True
-        ).view(B, NEGATIVE_SAMPLES).to(device, non_blocking=True)
+        # 2) Build targets: sample negatives + create labels
+        # all_contexts: (B, 1+K) = [positive | negatives]
+        # labels:       (B, 1+K) = [1, 0, ..., 0]
+        all_contexts, labels = make_targets(centers, contexts, vocab_size)
 
-        # (권장) positive context가 negative에 섞이면 재샘플링
-        neg = resample_if_matches(neg, contexts, neg_probs_cpu)
+        # 3) Compute logits for (center, each context in all_contexts)
+        #    dot product between center embedding and each context embedding
+        v = model.in_embed(centers)            # (B, D)
+        u = model.out_embed(all_contexts)      # (B, 1+K, D)
 
-        # --- positive logits ---
-        pos_logits = model.forward_pos(centers, contexts)     # (B,)
-        pos_labels = torch.ones_like(pos_logits)
+        logits = torch.bmm(u, v.unsqueeze(2)).squeeze(2)   # (B, 1+K)
 
-        # --- negative logits ---
-        v_center = model.in_embed(centers)        # (B, D)
-        u_neg = model.out_embed(neg)              # (B, K, D)
-        neg_logits = torch.bmm(u_neg, v_center.unsqueeze(2)).squeeze(2)  # (B, K)
-        neg_labels = torch.zeros_like(neg_logits)
+        # 4) BCEWithLogitsLoss combines positive and negative loss automatically
+        loss = bce(logits, labels)
 
-        # --- loss ---
-        loss = bce(pos_logits, pos_labels) + bce(neg_logits, neg_labels)
-
+        # 5) Backprop
         optimizer.zero_grad(set_to_none=True)
         loss.backward()
         optimizer.step()
 
-        running += loss.item()
+        running_loss += loss.item()
 
+        # (선택) 로그
         if step % 2000 == 0:
-            print(f"Epoch {epoch} Step {step}/{len(loader)} loss={running/step:.4f}")
+            print(f"Epoch {epoch} Step {step}/{len(loader)}  avg_loss={running_loss/step:.4f}")
 
-    print(f"Epoch {epoch} done. avg loss={running/len(loader):.4f}")
+    print(f"Epoch {epoch} done. avg_loss={running_loss/len(loader):.4f}")
+
 
 # Save embeddings and mappings
 embeddings = model.in_embed.weight.detach().cpu().numpy()
