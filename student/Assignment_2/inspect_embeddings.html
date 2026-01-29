@@ -2357,27 +2357,27 @@ vertical-align: -.125em;
 [nltk_data]   Package punkt_tab is already up-to-date!</code></pre>
 </div>
 </div>
-<div id="32b7ed64" class="cell" data-execution_count="4">
+<div id="32b7ed64" class="cell" data-execution_count="34">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. My PyTorch Skip-Gram</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">&#39;embeddings&#39;</span> <span class="kw">in</span> my_model_data <span class="kw">and</span> <span class="st">&#39;word2idx&#39;</span> <span class="kw">in</span> my_model_data:</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    my_model_tuple <span class="op">=</span> (my_model_data[<span class="st">&#39;embeddings&#39;</span>], my_model_data[<span class="st">&#39;word2idx&#39;</span>])</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    evaluate_similarity(<span class="st">&quot;My PyTorch Skip-Gram&quot;</span>, my_model_tuple, <span class="st">&#39;dict&#39;</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    evaluate_similarity(<span class="st">&quot;My PyTorch-trained&quot;</span>, my_model_tuple, <span class="st">&#39;dict&#39;</span>)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Gensim Benchmark (PKL)</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">&#39;embeddings&#39;</span> <span class="kw">in</span> gensim_data <span class="kw">and</span> <span class="st">&#39;word2idx&#39;</span> <span class="kw">in</span> gensim_data:</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    gensim_tuple <span class="op">=</span> (gensim_data[<span class="st">&#39;embeddings&#39;</span>], gensim_data[<span class="st">&#39;word2idx&#39;</span>])</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    evaluate_similarity(<span class="st">&quot;Gensim Benchmark (PKL)&quot;</span>, gensim_tuple, <span class="st">&#39;dict&#39;</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    evaluate_similarity(<span class="st">&quot;Gensim-trained&quot;</span>, gensim_tuple, <span class="st">&#39;dict&#39;</span>)</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Pretrained Google News</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">&#39;google_model&#39;</span> <span class="kw">in</span> <span class="bu">globals</span>():</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    evaluate_similarity(<span class="st">&quot;Pretrained Google News&quot;</span>, Word2Vec_model, <span class="st">&#39;gensim&#39;</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">&#39;Word2Vec_model&#39;</span> <span class="kw">in</span> <span class="bu">globals</span>():</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    evaluate_similarity(<span class="st">&quot;Pretrained Word2Vec&quot;</span>, Word2Vec_model, <span class="st">&#39;gensim&#39;</span>)</span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Pretrained FastText</span></span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">&#39;fasttext_model&#39;</span> <span class="kw">in</span> <span class="bu">globals</span>():</span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    evaluate_similarity(<span class="st">&quot;Pretrained FastText&quot;</span>, fasttext_model, <span class="st">&#39;gensim&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
---- [Model: My PyTorch Skip-Gram] Similarity Results ---
+--- [Model: My PyTorch-trained] Similarity Results ---
 Score: 0.6345 | My shopping list includes milk and bread.
 Score: 0.5754 | The cat sat on the mat.
 Score: 0.5433 | The feline was resting on the rug.
@@ -2387,7 +2387,7 @@ Score: 0.4461 | I need to buy groceries today.
 Score: 0.2980 | Canines enjoy outdoor activities.
 Score: 0.1810 | Programming requires logical thinking.
 
---- [Model: Gensim Benchmark (PKL)] Similarity Results ---
+--- [Model: Gensim-trained] Similarity Results ---
 Score: 0.7040 | The cat sat on the mat.
 Score: 0.5884 | A dog is playing in the yard.
 Score: 0.4940 | The weather is beautiful today.
@@ -2396,6 +2396,16 @@ Score: 0.4668 | My shopping list includes milk and bread.
 Score: 0.1843 | I need to buy groceries today.
 Score: 0.0783 | Programming requires logical thinking.
 Score: 0.0686 | Canines enjoy outdoor activities.
+
+--- [Model: Pretrained Word2Vec] Similarity Results ---
+Score: 0.7794 | The feline was resting on the rug.
+Score: 0.7369 | The cat sat on the mat.
+Score: 0.6483 | A dog is playing in the yard.
+Score: 0.4970 | My shopping list includes milk and bread.
+Score: 0.4310 | The weather is beautiful today.
+Score: 0.4281 | Canines enjoy outdoor activities.
+Score: 0.3718 | I need to buy groceries today.
+Score: 0.2979 | Programming requires logical thinking.
 
 --- [Model: Pretrained FastText] Similarity Results ---
 Score: 0.9247 | The feline was resting on the rug.
