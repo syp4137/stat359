@@ -12,6 +12,7 @@ import json
 import random
 import numpy as np
 from torch.utils.tensorboard import SummaryWriter
+import wandb
 
 # === Parse Arguments ===
 def parse_args():
@@ -212,6 +213,18 @@ def train_and_evaluate(args):
         lr=args.lr,
         weight_decay=args.weight_decay,
     )
+
+    # W&B initialize
+    wandb.init(
+    project="tinystories-pretraining",  # W&B 웹 대시보드에 생성될 프로젝트 이름
+    config={
+        "learning_rate": args.lr,
+        "epochs": args.epochs,
+        "batch_size": args.batch_size,
+        "model_layers": args.num_layers,
+        "max_train_samples": args.max_train_samples
+    }
+    )
     
     # Set initial learning rate for scheduler
     for param_group in optimizer.param_groups:
@@ -317,10 +330,20 @@ def train_and_evaluate(args):
                     # Log to TensorBoard
                     writer.add_scalar('Loss/train', avg_loss, global_step)
                     writer.add_scalar('Perplexity/train', np.exp(avg_loss), global_step)
+                    wandb.log({
+                    "train/loss": avg_loss, 
+                    "train/learning_rate": scheduler.get_last_lr()[0],
+                    "global_step": global_step
+                    })
                 
                 # Evaluate
                 if global_step % args.eval_steps == 0:
                     val_loss = evaluate(model, val_dataloader, criterion, device)
+                    wandb.log({
+                    "val/loss": val_loss,
+                    "val/perplexity": np.exp(val_loss),
+                    "global_step": global_step
+                    })
                     val_ppl = np.exp(val_loss)
                     print(f"Step {global_step}: Validation loss: {val_loss:.4f}, Perplexity: {val_ppl:.2f}")
                     writer.add_scalar('Loss/val', val_loss, global_step)
@@ -354,6 +377,11 @@ def train_and_evaluate(args):
         
         # End of epoch
         avg_epoch_loss = epoch_loss / len(train_dataloader)
+        wandb.log({
+        "epoch/train_loss": avg_epoch_loss,
+        "epoch/val_loss": val_loss,
+        "epoch": epoch + 1
+        })
         train_ppl = np.exp(avg_epoch_loss)
         print(f"Epoch {epoch+1}/{args.epochs}, Average Train Loss: {avg_epoch_loss:.4f}, Train Perplexity: {train_ppl:.2f}")
         writer.add_scalar('Loss/train_epoch', avg_epoch_loss, epoch+1)
@@ -366,6 +394,8 @@ def train_and_evaluate(args):
         model_path = os.path.join(args.output_dir, f"model_epoch_{epoch+1}.pth")
         torch.save(model.state_dict(), model_path)
         print(f"Model saved to {model_path}")
+
+    wandb.finish()
     
     # Save final model
     final_model_path = os.path.join(args.output_dir, "final_model.pth")
