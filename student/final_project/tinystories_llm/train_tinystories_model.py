@@ -1,3 +1,4 @@
+# %load /content/stat359/student/final_project/tinystories_llm/train_tinystories_model.py
 import os
 import torch
 import argparse
@@ -215,16 +216,7 @@ def train_and_evaluate(args):
     )
 
     # W&B initialize
-    wandb.init(
-    project="tinystories-pretraining",  # W&B 웹 대시보드에 생성될 프로젝트 이름
-    config={
-        "learning_rate": args.lr,
-        "epochs": args.epochs,
-        "batch_size": args.batch_size,
-        "model_layers": args.num_layers,
-        "max_train_samples": args.max_train_samples
-    }
-    )
+    wandb.init(project="tinystories-patching", config=vars(args))
     
     # Set initial learning rate for scheduler
     for param_group in optimizer.param_groups:
@@ -332,7 +324,7 @@ def train_and_evaluate(args):
                     writer.add_scalar('Perplexity/train', np.exp(avg_loss), global_step)
                     wandb.log({
                     "train/loss": avg_loss, 
-                    "train/learning_rate": scheduler.get_last_lr()[0],
+                    "train/learning_rate": optimizer.param_groups[0]['lr'],
                     "global_step": global_step
                     })
                 

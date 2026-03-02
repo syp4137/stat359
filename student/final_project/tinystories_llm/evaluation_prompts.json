@@ -1,0 +1,242 @@
+[
+  {
+    "prompt_id": "L1_01",
+    "level": 1,
+    "category": "Single Character",
+    "text": "Once upon a time, there was a little dog named Spot. Spot was a very happy dog.",
+    "target_names": ["Spot"],
+    "forbidden_names": ["Tim", "Lily", "Max", "Bella", "Leo", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L1_02",
+    "level": 1,
+    "category": "Single Character",
+    "text": "A brave mouse named Tim lived in a big house. Tim loved to explore the rooms.",
+    "target_names": ["Tim"],
+    "forbidden_names": ["Spot", "Lily", "Max", "Bella", "Leo", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L1_03",
+    "level": 1,
+    "category": "Single Character",
+    "text": "Lily was a small green frog. She sat on a green leaf near the water.",
+    "target_names": ["Lily"],
+    "forbidden_names": ["Spot", "Tim", "Max", "Bella", "Leo", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L1_04",
+    "level": 1,
+    "category": "Single Character",
+    "text": "There was a big brown bear named Max. Max was very hungry in the morning.",
+    "target_names": ["Max"],
+    "forbidden_names": ["Spot", "Tim", "Lily", "Bella", "Leo", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L1_05",
+    "level": 1,
+    "category": "Single Character",
+    "text": "Bella the beautiful butterfly liked to fly in the garden. She had big red wings.",
+    "target_names": ["Bella"],
+    "forbidden_names": ["Spot", "Tim", "Lily", "Max", "Leo", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L1_06",
+    "level": 1,
+    "category": "Single Character",
+    "text": "A lazy cat named Leo slept on the warm rug. Leo did not want to wake up.",
+    "target_names": ["Leo"],
+    "forbidden_names": ["Spot", "Tim", "Lily", "Max", "Bella", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L2_01",
+    "level": 2,
+    "category": "Two Characters, Different Species",
+    "text": "Spot the dog and Tim the mouse were friends. Spot was very loud.",
+    "target_names": ["Spot", "Tim"],
+    "forbidden_names": ["Lily", "Max", "Bella", "Leo", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L2_02",
+    "level": 2,
+    "category": "Two Characters, Different Species",
+    "text": "A cat named Leo saw a bird named Pip. Leo wanted to play a game.",
+    "target_names": ["Leo", "Pip"],
+    "forbidden_names": ["Spot", "Tim", "Lily", "Max", "Bella", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L2_03",
+    "level": 2,
+    "category": "Two Characters, Different Species",
+    "text": "Daisy the duck and Sam the snail went to the pond. Daisy swam very fast.",
+    "target_names": ["Daisy", "Sam"],
+    "forbidden_names": ["Spot", "Tim", "Lily", "Max", "Bella", "Leo", "Pip", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L2_04",
+    "level": 2,
+    "category": "Two Characters, Different Species",
+    "text": "Max the bear and Lily the frog found a shiny apple. Max was very happy.",
+    "target_names": ["Max", "Lily"],
+    "forbidden_names": ["Spot", "Tim", "Bella", "Leo", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L2_05",
+    "level": 2,
+    "category": "Two Characters, Different Species",
+    "text": "A fast rabbit named Ruby and a slow turtle named Tom decided to race. Ruby ran ahead.",
+    "target_names": ["Ruby", "Tom"],
+    "forbidden_names": ["Spot", "Tim", "Lily", "Max", "Bella", "Leo", "Pip", "Daisy", "Sam", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L2_06",
+    "level": 2,
+    "category": "Two Characters, Different Species",
+    "text": "Spot the dog chased a butterfly named Bella. Bella flew high in the sky.",
+    "target_names": ["Spot", "Bella"],
+    "forbidden_names": ["Tim", "Lily", "Max", "Leo", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L3_01",
+    "level": 3,
+    "category": "Two Characters, Same Species",
+    "text": "Two dogs, Max and Spot, were playing with a ball. Max ran to get the ball.",
+    "target_names": ["Max", "Spot"],
+    "forbidden_names": ["Tim", "Lily", "Bella", "Leo", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L3_02",
+    "level": 3,
+    "category": "Two Characters, Same Species",
+    "text": "Lily and Daisy were two frogs. Lily was green and Daisy was yellow.",
+    "target_names": ["Lily", "Daisy"],
+    "forbidden_names": ["Spot", "Tim", "Max", "Bella", "Leo", "Pip", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L3_03",
+    "level": 3,
+    "category": "Two Characters, Same Species",
+    "text": "Tim and Sam were brother mice. Tim found a big crumb of cheese.",
+    "target_names": ["Tim", "Sam"],
+    "forbidden_names": ["Spot", "Lily", "Max", "Bella", "Leo", "Pip", "Daisy", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L3_04",
+    "level": 3,
+    "category": "Two Characters, Same Species",
+    "text": "Two cats, Leo and Bella, sat on the mat. Leo went to sleep.",
+    "target_names": ["Leo", "Bella"],
+    "forbidden_names": ["Spot", "Tim", "Lily", "Max", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L3_05",
+    "level": 3,
+    "category": "Two Characters, Same Species",
+    "text": "Ruby and Pip were two birds in a tree. Ruby flew away to find food.",
+    "target_names": ["Ruby", "Pip"],
+    "forbidden_names": ["Spot", "Tim", "Lily", "Max", "Bella", "Leo", "Daisy", "Sam", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L3_06",
+    "level": 3,
+    "category": "Two Characters, Same Species",
+    "text": "Jack and Tom were two tall bears. Jack gave Tom a big hug.",
+    "target_names": ["Jack", "Tom"],
+    "forbidden_names": ["Spot", "Tim", "Lily", "Max", "Bella", "Leo", "Pip", "Daisy", "Sam", "Ruby", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L4_01",
+    "level": 4,
+    "category": "Character and Object Logic",
+    "text": "Spot the dog found a red ball in the park. The ball was very bouncy.",
+    "target_names": ["Spot"],
+    "forbidden_names": ["Tim", "Lily", "Max", "Bella", "Leo", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L4_02",
+    "level": 4,
+    "category": "Character and Object Logic",
+    "text": "Tim the mouse had a tiny blue hat. Tim put the hat on his head.",
+    "target_names": ["Tim"],
+    "forbidden_names": ["Spot", "Lily", "Max", "Bella", "Leo", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L4_03",
+    "level": 4,
+    "category": "Character and Object Logic",
+    "text": "Max the bear saw a big pot of honey. The honey looked very sweet.",
+    "target_names": ["Max"],
+    "forbidden_names": ["Spot", "Tim", "Lily", "Bella", "Leo", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L4_04",
+    "level": 4,
+    "category": "Character and Object Logic",
+    "text": "Lily the frog looked at the bright moon. The moon was shining in the sky.",
+    "target_names": ["Lily"],
+    "forbidden_names": ["Spot", "Tim", "Max", "Bella", "Leo", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L4_05",
+    "level": 4,
+    "category": "Character and Object Logic",
+    "text": "Leo the cat was trapped in a tall tree. The tree had many green leaves.",
+    "target_names": ["Leo"],
+    "forbidden_names": ["Spot", "Tim", "Lily", "Max", "Bella", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L4_06",
+    "level": 4,
+    "category": "Character and Object Logic",
+    "text": "Pip the bird found a shiny coin. The coin was made of gold.",
+    "target_names": ["Pip"],
+    "forbidden_names": ["Spot", "Tim", "Lily", "Max", "Bella", "Leo", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L5_01",
+    "level": 5,
+    "category": "Dialogue and Interaction",
+    "text": "\"Hello, Tim,\" said Spot the dog. Tim the mouse looked up with a smile.",
+    "target_names": ["Spot", "Tim"],
+    "forbidden_names": ["Lily", "Max", "Bella", "Leo", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L5_02",
+    "level": 5,
+    "category": "Dialogue and Interaction",
+    "text": "Max the bear was crying. Daisy the duck walked up to him and asked a question.",
+    "target_names": ["Max", "Daisy"],
+    "forbidden_names": ["Spot", "Tim", "Lily", "Bella", "Leo", "Pip", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L5_03",
+    "level": 5,
+    "category": "Dialogue and Interaction",
+    "text": "\"Let's run!\" shouted Ruby the rabbit. Tom the turtle sighed and nodded.",
+    "target_names": ["Ruby", "Tom"],
+    "forbidden_names": ["Spot", "Tim", "Lily", "Max", "Bella", "Leo", "Pip", "Daisy", "Sam", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L5_04",
+    "level": 5,
+    "category": "Dialogue and Interaction",
+    "text": "Spot the dog gave his bone to Leo the cat. Leo sniffed the bone carefully.",
+    "target_names": ["Spot", "Leo"],
+    "forbidden_names": ["Tim", "Lily", "Max", "Bella", "Pip", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L5_05",
+    "level": 5,
+    "category": "Dialogue and Interaction",
+    "text": "\"I can fly!\" said Pip the bird. Max the bear laughed out loud.",
+    "target_names": ["Pip", "Max"],
+    "forbidden_names": ["Spot", "Tim", "Lily", "Bella", "Leo", "Daisy", "Sam", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  },
+  {
+    "prompt_id": "L5_06",
+    "level": 5,
+    "category": "Dialogue and Interaction",
+    "text": "\"Where is the cheese?\" asked Sam the mouse. Bella the cat pointed to the table.",
+    "target_names": ["Sam", "Bella"],
+    "forbidden_names": ["Spot", "Tim", "Lily", "Max", "Leo", "Pip", "Daisy", "Ruby", "Tom", "Jack", "True", "Sue", "Mia", "Rex"]
+  }
+]

@@ -1,0 +1,1 @@
+Overall Pearson corr(story_cosine_diversity, distinct_2) = 0.7115
